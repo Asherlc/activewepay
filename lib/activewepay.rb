@@ -64,10 +64,18 @@ module ActiveWepay
       response = request.start {|http| http.request(call) }
       # returns JSON response as ruby hash
       @response = JSON.parse(response.body, :symbolize_names => true)
+      
+      set_instance_variables(response)
   
       self
     end
 
+    def set_instance_variables(hash)
+      hash.each do |key, value|
+        instance_variable_set "@#{key}".to_sym, value rescue false
+      end
+    end
+  
     def validate_response
       if @response[:error]
         @errors.add(@response[:error].to_sym, @response[:error_description])
