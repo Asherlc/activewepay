@@ -15,7 +15,7 @@ module ActiveWepay
 
     validate :validate_response
 
-    attr_reader :errors, :oauth_token, :id, :amount, :account_id, :redirect_uri, :callback_uri, :response, :name
+    attr_reader :errors, :oauth_token, :id, :amount, :redirect_uri, :callback_uri, :response, :name
 
    
     STAGE_API_ENDPOINT = "https://stage.wepayapi.com/v2"
@@ -26,6 +26,7 @@ module ActiveWepay
      
     def initialize(options)
       @errors = ActiveModel::Errors.new(self)
+      @options = options
 
       options[:oauth_token]  ? @oauth_token = options[:oauth_token] : false
       options[:amount]       ? @amount = options[:amount] : false
@@ -85,8 +86,10 @@ module ActiveWepay
     def method_missing(method_name, *args, &block)
       if @response and @response.keys.include? method_name.to_sym
         @response[method_name.to_sym]
-      else 
-       super
+      elsif @options.keys.include? method_name.to_sym
+        @options[method_name.to_sym]
+      else
+        super
       end
     end
   end
