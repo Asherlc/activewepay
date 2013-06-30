@@ -71,6 +71,8 @@ module ActiveWepay
       self
     end
 
+    private 
+
     def set_instance_variables(hash)
       hash.each do |key, value|
         instance_variable_set "@#{key}".to_sym, value rescue false
@@ -188,7 +190,7 @@ module ActiveWepay
       @recurring = self.new(options)
   
       @recurring.call('/preapproval/', @recurring.oauth_token, {
-          preapproval_id: id
+          preapproval_id: @recurring.id
       })
     end
   
