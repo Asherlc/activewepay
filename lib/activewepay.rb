@@ -9,9 +9,8 @@ require 'active_model'
  
 module ActiveWepay
   class Base
-    extend ActiveModel::Translation
-    extend ActiveModel::Callbacks
-    include ActiveModel::Validations
+    extend ActiveModel::Model
+    include ActiveModel::Model
 
     validate :validate_response
 
